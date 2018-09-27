@@ -1,0 +1,6 @@
+local modpath = minetest.get_modpath("explodingchest")
+dofile(modpath .. "/config.lua")
+dofile(modpath .. "/api.lua")
+dofile(modpath .. "/materials.lua")
+dofile(modpath .. "/containers.lua")
+dofile(modpath .. "/traps.lua")

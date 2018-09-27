@@ -1,0 +1,10 @@
+[Settings]
+
+# to limit the size of the explosion.
+explosion_max (Explosion max size) float 11
+# allow volatile containers.
+volatile_containers (Volatile containers) bool true
+# allow protected containers to be volatile.
+volatile_protected_containers (Volatile protected containers) bool false
+# allow craftable trap chest.
+explosive_traps (Craftable trap chest) bool true
