@@ -205,7 +205,7 @@ register_explosive_trap_container = function(name, def, explosion_size, register
 	end
 end
 
-register_explosive_trap_craft = function(name1,name2)
+register_explosive_trap_craft = function(name1, name2)
 	for k, v in pairs(explosive_materials) do
 		recipe_table = {name1}
 		if v.trap then
