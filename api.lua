@@ -1,7 +1,6 @@
 -- table to hold registered explosive materials.
 local explosive_materials = {}
 local inventories = {}
-local explosive_traps = {}
 
 -- functions
 drop_and_blowup = function(pos, removeifvolatile)
@@ -106,82 +105,30 @@ register_explosive_trap_container = function(name, def, explosion_size, register
 	
 	for k, v in pairs(minetest.registered_nodes[name]) do node[k] = v end
 
-	explosive_traps[def.name] = explosion_size
-
 	node.description = node.description .. " (explosive)"
 
 	node.on_rightclick = function(pos, node_arg, clicker)
-		local node = minetest.get_node_or_nil(pos)
-		
-		if node then
-			local explodesize = explosive_traps[node.name]
-			
-			if not explodesize then
-				explodesize = tnt_radius
-			end
-			
-			tnt.boom(pos, {radius = explodesize, damage_radius = explodesize * 2})
-		end
+		tnt.boom(pos, {radius = explosion_size, damage_radius = explosion_size * 2})
 	end
 
 	node.on_blast = function(pos)
-		local node = minetest.get_node_or_nil(pos)
-		
-		if node then
-			local explodesize = explosive_traps[node.name]
-			
-			if not explodesize then
-				explodesize = tnt_radius
-			end
-
-			tnt.boom(pos, {radius = explodesize, damage_radius = explodesize * 2})
-		end
+		tnt.boom(pos, {radius = explosion_size, damage_radius = explosion_size * 2})
 	end
 
 	node.on_ignite = function(pos)
-		local node = minetest.get_node_or_nil(pos)
-		
-		if node then
-			local explodesize = explosive_traps[node.name]
-			
-			if not explodesize then
-				explodesize = tnt_radius
-			end
-
-			tnt.boom(pos, {radius = explodesize, damage_radius = explodesize * 2})
-		end
+		tnt.boom(pos, {radius = explosion_size, damage_radius = explosion_size * 2})
 	end
 
 	node.mesecons = {effector =
 		{action_on =
 			function(pos)
-				local node = minetest.get_node_or_nil(pos)
-				
-				if node then
-					local explodesize = explosive_traps[node.name]
-					
-					if not explodesize then
-						explodesize = tnt_radius
-					end
-
-					tnt.boom(pos, {radius = explodesize, damage_radius = explodesize * 2})
-				end
+				tnt.boom(pos, {radius = explosion_size, damage_radius = explosion_size * 2})
 			end
 		}
 	}
 
 	node.on_burn = function(pos)
-		local node = minetest.get_node_or_nil(pos)
-		
-		if node then
-			local explodesize = explosive_traps[node.name]
-			
-			if not explodesize then
-				explodesize = tnt_radius
-			end
-
-			tnt.boom(pos, {radius = explodesize, damage_radius = explodesize * 2})
-		end
+		tnt.boom(pos, {radius = explosion_size, damage_radius = explosion_size * 2})
 	end
 
 	local groups = node.groups
