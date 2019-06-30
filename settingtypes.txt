@@ -1,10 +1,11 @@
 [Settings]
 
 # to limit the size of the explosion.
-ec_config.explosion_max (Explosion max size) float 11
-# allow volatile containers.
-ec_config.volatile_containers (Volatile containers) bool true
-# allow protected containers to be volatile.
-ec_config.volatile_protected_containers (Volatile protected containers) bool false
-# allow craftable trap chest.
-ec_config.explosive_traps (Craftable trap chest) bool true
+explodingchest.explosion_max (Explosion max size) float 11
+# The way the explosion is calculated.
+# Multiply means explosive material is multiplied.
+# Reduce means the initial explosion size is set to the biggest explosive material then the rest is dividend by reduce.
+explodingchest.radius_comput (Radius comput) enum multiply reduce,multiply
+# The amount to divide by. (this is only in use if radius_comput is set to reduce)
+explodingchest.reduce (Reduce) int 288
+

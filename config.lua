@@ -1,6 +1,5 @@
-ec_config = {}
+explodingchest_config = {}
 
-ec_config.explosion_max = tonumber(minetest.settings:get("explodingchest.explosion_max")) or 11
-ec_config.volatile_containers = minetest.settings:get_bool("explodingchest.volatile_containers") or true
-ec_config.volatile_protected_containers = minetest.settings:get_bool("explodingchest.volatile_protected_containers") or false
-ec_config.explosive_traps = minetest.settings:get_bool("explodingchest.explosive_traps") or true
+explodingchest_config.explosion_max = tonumber(minetest.settings:get("explodingchest.explosion_max")) or 11
+explodingchest_config.radius_comput = minetest.settings:get("explodingchest.radius_comput") or "reduce"
+explodingchest_config.reduce = tonumber(minetest.settings:get("explodingchest.reduce")) or 288
