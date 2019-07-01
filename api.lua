@@ -117,6 +117,7 @@ function exploding_chest.drop_and_blowup(pos, removeifvolatile, eject, meta)
 
 	if radius_comput == "reduce" then
 		local index
+		local trap = false
 		
 		-- init explosion size
 		for k, v in pairs(olddrops) do
@@ -128,6 +129,12 @@ function exploding_chest.drop_and_blowup(pos, removeifvolatile, eject, meta)
 					index = k
 				end
 			end
+
+			if v.name == "explodingchest:trap" and not trap then
+				olddrops[k].count = 0
+				trap = true
+			end
+
 		end
 
 		if index then
