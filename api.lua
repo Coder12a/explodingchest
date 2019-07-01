@@ -112,53 +112,69 @@ function exploding_chest.drop_and_blowup(pos, removeifvolatile, eject, meta)
 	local reduce = explodingchest_config.reduce
 
 	for q, r in pairs(inv:get_lists()) do
-		if explodesize >= max  then
-			break
-		end
-		
 		get_inventory_drops(inv, q, olddrops)
+	end
 
-		if radius_comput == "reduce" then
-			-- init explosion size
-			for k, v in pairs(olddrops) do
-				local item = ref_items[v.name]
-
-				if item and item.groups.explosive then
-					if explodesize < item.groups.explosive then
-						explodesize = item.groups.explosive
-					end
-				end
-			end
-		end
+	if radius_comput == "reduce" then
+		local index
 		
+		-- init explosion size
 		for k, v in pairs(olddrops) do
 			local item = ref_items[v.name]
 
 			if item and item.groups.explosive then
-				if radius_comput == "multiply" then
-					for i = 1, v.count do
-						explodesize = explodesize + item.groups.explosive
-						if explodesize >= max then
-							v.count = v.count - i
-							explodesize = max
-							break
-						end
-					end
-				else
-					for i = 1, v.count do
-						explodesize = explodesize + item.groups.explosive / reduce
-						if explodesize >= max then
-							v.count = v.count - i
-							explodesize = max
-							break
-						end
-					end
+				if explodesize < item.groups.explosive then
+					explodesize = item.groups.explosive
+					index = k
 				end
 			end
+		end
 
-			if v.count >= 1 then
-				drops[#drops + 1] = v
+		if index then
+			olddrops[index].count = olddrops[index].count - 1
+		end
+	end
+	
+	for k, v in pairs(olddrops) do
+
+		if explodesize >= max then
+			break
+		end
+
+		local item = ref_items[v.name]
+
+		if item and item.groups.explosive then
+			if radius_comput == "multiply" then
+				for i = 1, v.count do
+					explodesize = explodesize + item.groups.explosive
+					if explodesize >= max then
+						v.count = v.count - i
+						explodesize = max
+						break
+					end
+				end
+
+				if explodesize < max then
+					v.count = 0
+				end
+			else
+				for i = 1, v.count do
+					explodesize = explodesize + item.groups.explosive / reduce
+					if explodesize >= max then
+						v.count = v.count - i
+						explodesize = max
+						break
+					end
+				end
+
+				if explodesize < max then
+					v.count = 0
+				end
 			end
+		end
+
+		if v.count >= 1 then
+			drops[#drops + 1] = v
 		end
 	end
 
