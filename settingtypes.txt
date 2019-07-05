@@ -9,3 +9,17 @@ explodingchest.radius_comput (Radius comput) enum multiply reduce,multiply
 # The amount to divide by. (this is only in use if radius_comput is set to reduce)
 explodingchest.reduce (Reduce) int 288
 
+[Blast Type]
+
+# Instant blast type means the volatile container will blow up in 0 seconds.
+# Entity blast type means the volatile container will turn into a entity (You need tnt_revamped mod turn on for this)
+# Timer blast type means the volatile container will have a delay before blowing up.
+explodingchest.blast_type (Blast type) enum timer entity,instant,timer
+# This setting is for when the volatile container is opened and theres a trap craftitem inside.
+# Instant blast type means the volatile container will blow up in 0 seconds.
+# Entity blast type means the volatile container will turn into a entity (You need tnt_revamped mod turn on for this)
+# Timer blast type means the volatile container will have a delay before blowing up.
+explodingchest.trap_blast_type (Trap blast) enum instant entity,instant,timer
+# Blast delay timer (only works for entity and timer)
+# If timer is set to zero then the timer is auto set to the blast radius size.
+explodingchest.timer (Timer) int 0
