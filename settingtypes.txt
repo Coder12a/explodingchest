@@ -5,7 +5,7 @@ explodingchest.explosion_max (Explosion max size) float 11
 # The way the explosion is calculated.
 # Multiply means explosive material is multiplied.
 # Reduce means the initial explosion size is set to the biggest explosive material then the rest is dividend by reduce.
-explodingchest.radius_comput (Radius comput) enum multiply reduce,multiply
+explodingchest.radius_comput (Radius comput) enum reduce reduce,multiply
 # The amount to divide by. (this is only in use if radius_comput is set to reduce)
 explodingchest.reduce (Reduce) int 288
 
@@ -14,7 +14,7 @@ explodingchest.reduce (Reduce) int 288
 # Instant blast type means the volatile container will blow up in 0 seconds.
 # Entity blast type means the volatile container will turn into a entity (You need tnt_revamped mod turn on for this)
 # Timer blast type means the volatile container will have a delay before blowing up.
-explodingchest.blast_type (Blast type) enum timer entity,instant,timer
+explodingchest.blast_type (Blast type) enum instant entity,instant,timer
 # This setting is for when the volatile container is opened and theres a trap craftitem inside.
 # Instant blast type means the volatile container will blow up in 0 seconds.
 # Entity blast type means the volatile container will turn into a entity (You need tnt_revamped mod turn on for this)

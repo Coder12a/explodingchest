@@ -6,20 +6,20 @@ minetest.register_on_mods_loaded(function()
 			local old_on_rightclick = v.on_rightclick
 			minetest.override_item(k, {
 				on_blast = function(pos)
-					return exploding_chest.drop_and_blowup(pos, false, false, nil, explodingchest_config.blast_type, false)
+					return exploding_chest.drop_and_blowup(pos, false, false, nil, explodingchest_config.blast_type)
 				end,
 				on_ignite = function(pos)
-					exploding_chest.drop_and_blowup(pos, true, true, nil, explodingchest_config.blast_type, false)
+					exploding_chest.drop_and_blowup(pos, true, true, nil, explodingchest_config.blast_type)
 				end,
 				mesecons = {effector =
 					{action_on =
 						function(pos)
-							exploding_chest.drop_and_blowup(pos, true, true, nil, explodingchest_config.blast_type, false)
+							exploding_chest.drop_and_blowup(pos, true, true, nil, explodingchest_config.blast_type)
 						end
 					}
 				},
 				on_burn = function(pos)
-					exploding_chest.drop_and_blowup(pos, false, true, nil, explodingchest_config.blast_type, false)
+					exploding_chest.drop_and_blowup(pos, false, true, nil, explodingchest_config.blast_type)
 				end,
 				on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 					local meta = minetest.get_meta(pos)
@@ -29,7 +29,7 @@ minetest.register_on_mods_loaded(function()
 						for i = 1, inv:get_size(q) do
 							local stack = inv:get_stack(q, i)
 							if stack:get_count() > 0 and stack:get_name() == "explodingchest:trap" then
-								if exploding_chest.drop_and_blowup(pos, true, true, meta, explodingchest_config.trap_blast_type, false) then
+								if exploding_chest.drop_and_blowup(pos, true, true, meta, explodingchest_config.trap_blast_type) then
 									return
 								elseif old_on_rightclick then
 									return old_on_rightclick(pos, node, clicker, itemstack, pointed_thing)
@@ -41,7 +41,7 @@ minetest.register_on_mods_loaded(function()
 					if old_on_rightclick then
 						return old_on_rightclick(pos, node, clicker, itemstack, pointed_thing)
 					end
-				end
+				end,
 			})
 		end
 	end
@@ -195,8 +195,8 @@ local function process(pos, removeifvolatile, meta)
 end
 
 -- functions
-function exploding_chest.drop_and_blowup(pos, removeifvolatile, eject, meta, blast_type, instant)
-	if blast_type == "instant" or instant then
+function exploding_chest.drop_and_blowup(pos, removeifvolatile, eject, meta, blast_type)
+	if blast_type == "instant" then
 		local node, olddrops, drops, explodesize, blowup, riv = process(pos, removeifvolatile, meta)
 		
 		if blowup == true then
@@ -220,7 +220,7 @@ function exploding_chest.drop_and_blowup(pos, removeifvolatile, eject, meta, bla
 			local node, olddrops, drops, explodesize, blowup, riv = process(pos, removeifvolatile, meta)
 			timer = explodesize
 		end
-		minetest.after(timer, exploding_chest.drop_and_blowup, pos, removeifvolatile, eject, nil, blast_type, true)
+		minetest.after(timer, exploding_chest.drop_and_blowup, pos, removeifvolatile, eject, nil, "instant")
 	elseif blast_type == "entity" then
 		local node, olddrops, drops, explodesize, blowup, riv = process(pos, removeifvolatile, meta)
 		
