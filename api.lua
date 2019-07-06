@@ -1,6 +1,12 @@
 exploding_chest = {}
 
 minetest.register_on_mods_loaded(function()
+	if not tnt.boom then
+		error("Could not find tnt.boom function.")
+	elseif (explodingchest_config.blast_type == "entity" or explodingchest_config.trap_blast_type == "entity") 
+		and not tnt.create_entity then
+		error("Could not find tnt.create_entity function. Make sure tnt_revamped is enabled, or change one of the blast types from being set to entity.")
+	end
 	for k, v in pairs(minetest.registered_nodes) do
 		if v.groups.volatile then
 			local old_on_rightclick = v.on_rightclick
@@ -195,10 +201,9 @@ local function process(pos, removeifvolatile, meta)
 end
 
 -- functions
-function exploding_chest.drop_and_blowup(pos, removeifvolatile, eject, meta, blast_type)
-	if blast_type == "instant" then
+function exploding_chest.drop_and_blowup(pos, removeifvolatile, eject, meta, blast_type, instant)
+	if blast_type == "instant" or instant then
 		local node, olddrops, drops, explodesize, blowup, riv = process(pos, removeifvolatile, meta)
-		
 		if blowup == true then
 			minetest.remove_node(pos)
 			tnt.boom(pos, {radius = explodesize, damage_radius = explodesize * 2})
@@ -220,7 +225,7 @@ function exploding_chest.drop_and_blowup(pos, removeifvolatile, eject, meta, bla
 			local node, olddrops, drops, explodesize, blowup, riv = process(pos, removeifvolatile, meta)
 			timer = explodesize
 		end
-		minetest.after(timer, exploding_chest.drop_and_blowup, pos, removeifvolatile, eject, nil, "instant")
+		minetest.after(timer, exploding_chest.drop_and_blowup, pos, removeifvolatile, true, nil, "instant", true)
 	elseif blast_type == "entity" then
 		local node, olddrops, drops, explodesize, blowup, riv = process(pos, removeifvolatile, meta)
 		
