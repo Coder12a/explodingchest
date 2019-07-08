@@ -236,15 +236,13 @@ function exploding_chest.drop_and_blowup(pos, removeifvolatile, eject, meta, bla
 			end
 			local def = {radius = explodesize,
 				time = timer,
-				jump = 3,
-				flow = true}
+				jump = 3}
 			local obj = tnt.create_entity(pos, nil, nil, 3, def)
 			obj:set_properties({textures = {node.name}})
 			
 			local ent = obj:get_luaentity()
 			ent.time = timer
 			ent.drops = drops
-			ent.flow = true
 			drops = {}
 		elseif riv then
 			minetest.remove_node(pos)

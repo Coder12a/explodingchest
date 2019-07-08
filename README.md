@@ -34,7 +34,9 @@ explodingchest:trap Has no crafting receipt. You have to give it one.
 
 To limit the size of the explosion.
 
-explodingchest.explosion_max
+``` lua
+explodingchest.explosion_max = 11
+```
 
 The way the explosion is calculated.
 
@@ -42,11 +44,15 @@ Multiply means explosive material is multiplied.
 
 Reduce means the initial explosion size is set to the biggest explosive material then the rest is dividend by reduce.
 
-explodingchest.radius_comput
+``` lua
+explodingchest.radius_comput = "reduce"
+```
 
 The amount to divide by. (this is only in use if radius_comput is set to reduce)
 
-explodingchest.reduce
+``` lua
+explodingchest.reduce = 288
+```
 
 These settings can be changed in advanced settings.
 
@@ -58,7 +64,9 @@ Entity blast type means the volatile container will turn into a entity (You need
 
 Timer blast type means the volatile container will have a delay before blowing up.
 
-explodingchest.blast_type
+``` lua
+explodingchest.blast_type = "instant"
+```
 
 This setting is for when the volatile container is opened and theres a trap craftitem inside.
 
@@ -68,10 +76,14 @@ Entity blast type means the volatile container will turn into a entity (You need
 
 Timer blast type means the volatile container will have a delay before blowing up.
 
-explodingchest.trap_blast_type
+``` lua
+explodingchest.trap_blast_type = "instant"
+```
 
 Blast delay timer (only works for entity and timer)
 
 If timer is set to zero then the timer is auto set to the blast radius size.
 
-explodingchest.timer
+``` lua
+explodingchest.timer = 0
+```
