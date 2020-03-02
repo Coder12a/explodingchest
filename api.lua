@@ -33,7 +33,6 @@ minetest.register_on_mods_loaded(function()
 				on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 					local meta = minetest.get_meta(pos)
 					local inv = meta:get_inventory()
-					
 					for q, r in pairs(inv:get_lists()) do
 						for i = 1, inv:get_size(q) do
 							local stack = inv:get_stack(q, i)
@@ -46,7 +45,6 @@ minetest.register_on_mods_loaded(function()
 							end
 						end
 					end
-
 					if old_on_rightclick then
 						return old_on_rightclick(pos, node, clicker, itemstack, pointed_thing)
 					end
@@ -90,41 +88,32 @@ end
 
 local function process(pos, removeifvolatile, meta)
 	local node = minetest.get_node_or_nil(pos)
-
 	if not node then
 		return
 	end
-
 	if not meta then
 		meta = minetest.get_meta(pos)
 	end
-
 	local inv = meta:get_inventory()
-	
 	if not inv then
 		return
 	end
-
 	local olddrops = {}
 	local drops = {}
 	local explodesize = 0
 	local strength = 0
 	local blowup = false
 	local riv = false
-
 	if not removeifvolatile then
 		riv = true
 	end
-
 	local ref_items = minetest.registered_items
 	local max = explodingchest_config.explosion_max
 	local radius_comput = explodingchest_config.radius_comput
 	local reduce = explodingchest_config.reduce
-
 	for q, r in pairs(inv:get_lists()) do
 		get_inventory_drops(inv, q, olddrops)
 	end
-
 	if radius_comput == "reduce" then
 		local index
 		local trap = false
@@ -143,6 +132,12 @@ local function process(pos, removeifvolatile, meta)
 					strength = item.groups.strength
 					index = k
 				end
+			else
+				local str = explodesize * 333.33333333333333333333333333333
+				if strength < str then
+					strength = str
+					index = k
+				end
 			end
 			if v.name == "explodingchest:trap" and not trap then
 				olddrops[k].count = 0
@@ -153,21 +148,19 @@ local function process(pos, removeifvolatile, meta)
 			olddrops[index].count = olddrops[index].count - 1
 		end
 	end
-	
 	for k, v in pairs(olddrops) do
-
 		if explodesize >= max then
 			break
 		end
-
 		local item = ref_items[v.name]
-
 		if item and item.groups.explosive then
 			if radius_comput == "multiply" then
 				for i = 1, v.count do
 					explodesize = explodesize + item.groups.explosive
 					if item.groups.strength then
 						strength = strength + item.groups.strength
+					else
+						strength = strength + explodesize * 333.33333333333333333333333333333
 					end
 					if explodesize >= max then
 						v.count = v.count - i
@@ -175,7 +168,6 @@ local function process(pos, removeifvolatile, meta)
 						break
 					end
 				end
-
 				if explodesize < max then
 					v.count = 0
 				end
@@ -184,6 +176,8 @@ local function process(pos, removeifvolatile, meta)
 					explodesize = explodesize + item.groups.explosive / reduce
 					if item.groups.strength then
 						strength = strength + item.groups.strength / reduce
+					else
+						strength = strength + (explodesize * 333.33333333333333333333333333333) / reduce
 					end
 					if explodesize >= max then
 						v.count = v.count - i
@@ -197,17 +191,14 @@ local function process(pos, removeifvolatile, meta)
 				end
 			end
 		end
-
 		if v.count >= 1 then
 			drops[#drops + 1] = v
 		end
 	end
-
 	if explodesize >= 1.0 then
 		blowup = true
 		riv = true
 	end
-
 	drops[#drops + 1] = node.name
 	return node, olddrops, drops, explodesize, strength, blowup, riv
 end
@@ -240,7 +231,6 @@ function exploding_chest.drop_and_blowup(pos, removeifvolatile, eject, meta, bla
 		minetest.after(timer, exploding_chest.drop_and_blowup, pos, removeifvolatile, true, nil, "instant", true)
 	elseif blast_type == "entity" then
 		local node, olddrops, drops, explodesize, strength, blowup, riv = process(pos, removeifvolatile, meta)
-		
 		if blowup == true then
 			local timer = explodingchest_config.timer
 			if timer < 1 then
@@ -250,7 +240,7 @@ function exploding_chest.drop_and_blowup(pos, removeifvolatile, eject, meta, bla
 				time = timer,
 				jump = 3,
 				strength = strength}
-			local obj = tnt.create_entity(pos, nil, nil, 3, def)
+			local obj = tnt.create_entity(pos, nil, 3, def)
 			obj:set_properties({textures = {node.name}})
 			
 			local ent = obj:get_luaentity()
@@ -260,7 +250,6 @@ function exploding_chest.drop_and_blowup(pos, removeifvolatile, eject, meta, bla
 		elseif riv then
 			minetest.remove_node(pos)
 		end
-
 		return drops
 	end
 end
