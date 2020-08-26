@@ -64,6 +64,12 @@ The amount to divide by. (this is only in use if radius_comput is set to reduce)
 explodingchest.reduce = 288
 ```
 
+If true the chest from default will be made into a volatile container, and also a few other items will be overrided.
+
+```lua
+explodingchest.override_default = true
+```
+
 These settings can be changed in advanced settings.
 
 ## Blast Type

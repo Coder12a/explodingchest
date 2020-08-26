@@ -8,6 +8,8 @@ explodingchest.explosion_max (Explosion max size) float 11
 explodingchest.radius_comput (Radius comput) enum reduce reduce,multiply
 # The amount to divide by. (this is only in use if radius_comput is set to reduce)
 explodingchest.reduce (Reduce) int 288
+# If true the chest from default will be made into a volatile container, and a few other items will be overridden.
+explodingchest.override_default (Override default) bool true
 
 [Blast Type]
 
